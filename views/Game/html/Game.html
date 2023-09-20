@@ -51,8 +51,14 @@ onupdate=
 	set_mouse();
 	function CameraFollow()
 	{
-		let p = `${mover.transform().position} + ${new Vector3(0,200,-600)}`.op();
-		player.transform().position = p;
+		let offset = new Vector3(-600, 0, -1000);
+		let q = ` eq ${rotar.transform().rotation}`.op();
+		
+		let rq = `${offset} * ${q}`.op();
+	
+		let p = `${mover.transform().position} + ${rq}`.op();
+		player.transform().position = `${p} + ${{x:0, y:200, z:0}}`.op();
+		player.transform().rotation = `${rotar.transform().rotation} * ${{x:q.y,y:-1,z:-1}}`.op();
 	}
 	CameraFollow();
 "
@@ -75,6 +81,7 @@ onkeyup="key_off(event);"
         <div top="" style="background-color: var(--color);"></div>
         <div bottom="" style="background-color: var(--color);"></div>
     </section>
+	
 
     <!-- 2D o UI -->
     <div _orientation="vertical">
@@ -96,51 +103,18 @@ onkeyup="key_off(event);"
 				
                 WASDZ SPACE: Move
             </div>
-			<!--
-            <div>
-                Mouse: Rotate
-            </div>
-			-->
-			<!--
-            <div>
-                Click: Interact
-            </div>
-			-->
-			<!--
-            <button onclick="
-            let b = confirm('Quieres borrar esta escena');
-            if(b)
-            {
-                updates = [];
-                localStorage[location.pathname] = '';
-                location.reload();
-            }
-            else
-            {
-                
-            }
-            ">
-                Borrar Save
-            </button>
-            <button onclick="
-            navigator.clipboard.writeText(document.body.innerHTML);
-            alert('html copiado');
-            ">
-                Copiar Html
-            </button>
-            <button onclick="
-            if(confirm('Quieres importar?'))
-            {
-                Importar();
-            }
-            else
-            {
-
-            }
-            ">
-                Importar
-            </button>
-			-->
+			<div
+			style=
+			"
+				width:200px;
+				height:100px;
+				background:red;
+				color:white;
+				font-size:16px;
+			"
+			>
+				vida: 100
+			</div>				
         </div>
         <mira _orientation="vertical_center" select="false" style="
         font-size: 15px;

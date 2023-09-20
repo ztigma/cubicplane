@@ -89,7 +89,7 @@ class Key extends Interfaz {
 
 			player.transform().rotation = `${player.transform().rotation} - ${new Vector3(0, 0, 1)}`.op();
 		}
-		if (key == "d") {
+		else if (key == "d") {
 			add_force.x = fuerza;
 
 			if (player.transform().rotation.z > 25) {
@@ -102,3 +102,12 @@ class Key extends Interfaz {
 		//console.log(`${this.key} : key on: ${q.arranque}`);
 	}
 }
+updates.push
+(
+	{
+		Update:function()
+		{
+			player.transform().rotation = `${player.transform().rotation} * ${new Vector3(1, 1, 0.95)}`.op();
+		}
+	}
+);
