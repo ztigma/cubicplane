@@ -1,0 +1,63 @@
+:root
+{
+    --luz: 100;
+    --calor: 0;
+    --niebla: 0;
+    --satura: 100;
+}
+[objeto=true] > *
+{
+    filter:
+    sepia(calc(var(--calor) * 1%))
+    saturate(calc(var(--satura) * 1%))
+    brightness(calc(var(--luz) * 0.01))
+    contrast(calc(((var(--niebla) * -1) + 100) * 1%))
+    ;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+conic
+{
+    background: conic-gradient(
+        in hsl longer hue,
+        hsl(0deg 100% 50%),
+        hsl(360deg 100% 50%)
+      );
+      display: block;
+}
+satura
+{
+    background: hsl(0deg 50% 50%);
+    display: block;
+}

@@ -1,0 +1,177 @@
+<!--
+    Desarrollado e implementado por Romel Lucero. Venezuela.
+-->
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../public/css/Attributes.css"/>
+    <link rel="stylesheet" href="../public/css/3D.css"/>
+
+    <!-- JS -->
+    <script src="../public/js/Operators.js"></script>
+    <script src="../public/js/Vector3.js"></script>
+    <script src="../public/js/Quaternion.js"></script>
+    
+    <script src="../public/js/OnCollision.js"></script>
+
+    <script src="../public/js/Client.js"></script>
+    <script src="../public/js/Interfaz.js"></script>
+    <script src="../public/js/Colors.js"></script>
+    <script src="../public/js/Lenguaje.js"></script>
+    <script src="../public/js/Mouse.js"></script>
+    <script src="../public/js/Keys.js"></script>
+
+    
+    <script src="../public/js/Transform.js"></script>
+    <script src="../public/js/Force.js"></script>
+    
+    <script src="../public/editor/Save.js"></script>
+
+    <script>
+        var backs = new Backgrounds('');
+        is_editor = true;
+    </script>
+
+    <!-- SVG -->
+    <link rel="icon" type="image/svg+xml" href="../public/img/icon_main.png" />
+    <title>Editor: main</title>
+</head>
+<body
+onmousemove="get_mouse(event);"
+onupdate="set_mouse();"
+onkeydown="key_on(event);"
+onkeyup="key_off(event);"
+>
+    <!-- DECLARATIVAS -->
+
+    <!-- CUBE -->
+    <section imply="false" objeto="true" export="cube" style="
+    --otx:0; --oty:0; --otz:0;
+    --orx:0; --ory:0; --orz:0;
+    --osx:1; --osy:1; --osz:1;
+    ">
+        <div front="" style="background-color: var(--color);"></div>
+        <div back="" style="background-color: var(--color);"></div>
+        <div right="" style="background-color: var(--color);"></div>
+        <div left="" style="background-color: var(--color);"></div>
+        <div top="" style="background-color: var(--color);"></div>
+        <div bottom="" style="background-color: var(--color);"></div>
+    </section>
+
+    <!-- CONTROL DE JUEGOS -->
+    <div imply="false" export="control" parent3d="true" style="
+    --otx: 0; --oty: 119; --otz: 190;
+    --orx:0; --ory:0; --orz:0;
+    --osx: 0.25; --osy:0.25; --osz: 0.25;
+    ">
+        <section import="cube" imply="true" base="" child_mode="add" style="
+        --otx:0; --oty: 0; --otz:0;
+        --orx:0; --ory: 0; --orz:0;
+        --osx: 1; --osy:0.1; --osz: 0.5;
+        " objeto="true">
+        <div front="" style="background-color: var(--color);"></div>
+        <div back="" style="background-color: var(--color);"></div>
+        <div right="" style="background-color: var(--color);"></div>
+        <div left="" style="background-color: var(--color);"></div>
+        <div top="" style="background-color: var(--color);"></div>
+        <div bottom="" style="background-color: var(--color);"></div>
+    </section>
+    </div>
+
+    <!-- 2D o UI -->
+    <div _orientation="vertical">
+        <div _orientation="vertical_center" ui="true" select="false" style="
+            padding: 2vw;
+            z-index: 10;
+            position: fixed;
+            top: 0;
+            left: 0;
+        ">
+            <div>
+                X: Bloquearse
+            </div>
+            <div>
+                WASD: Moverse
+            </div>
+            <div>
+                Mouse: Rotar
+            </div>
+            <div>
+                Click: Interacutar
+            </div>
+            <button onclick="
+            let b = confirm('Quieres borrar esta escena');
+            if(b)
+            {
+                updates = [];
+                localStorage[location.pathname] = '';
+                location.reload();
+            }
+            else
+            {
+                
+            }
+            ">
+                Borrar Save
+            </button>
+            <button onclick="
+            navigator.clipboard.writeText(document.body.innerHTML);
+            alert('html copiado');
+            ">
+                Copiar Html
+            </button>
+            <button onclick="
+            if(confirm('Quieres importar?'))
+            {
+                Importar();
+            }
+            else
+            {
+
+            }
+            ">
+                Importar
+            </button>
+        </div>
+        <mira _orientation="vertical_center" select="false" style="
+        font-size: 15px;
+        color: red;
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        z-index: 100;
+        ">
+            o
+        </mira>
+    </div>
+
+    <!-- 3D -->
+    <corrector_de_perspectiva>
+        <rota_objetos id="rotar" style="--orx:-8.48482; --ory:-31.6494; --orz:0; --oqx:0.35166; --oqy:-0.0942758; --oqz:0.64834;">
+            <mueve_objetos id="mover" style="--otx:-9.88696; --oty:45; --otz:388.045; --w:20; --h:100; --osx:1; --osy:1; --osz:1;" onforce="true" oncollision="" is_collision="true">
+                <!-- IMPLEMENTACIONES -->
+
+                <section import="cube" objeto="true" imply="true" child_mode="replace" collision3d="true" style="
+                --otx: -400; --oty:0; --otz: 100;
+                --orx:0; --ory:0; --orz:0;
+                --osx:1; --osy: 2; --osz: 4;
+                ">
+                    <div front="" style="background: url('../public/img/pared.jpg') 0% 0% / 1000px 250px;"></div>
+                    <div back="" style="background: url('../public/img/pared.jpg') 0% 0% / 1000px 250px;"></div>
+                    <div right="" style="background: url('../public/img/pared.jpg') 0% 0% / 250px 250px;"></div>
+                    <div left="" style="background: url('../public/img/pared.jpg') 0% 0% / 250px 250px;"></div>
+                    <div top="" style="background: url('../public/img/pared.jpg') 0% 0% / 250px 250px;"></div>
+                    <div bottom="" style="background: url('../public/img/pared.jpg') 0% 0% / 250px 250px;"></div>
+                </section>
+
+                <section import="cube" imply="true" child_mode="replace" collision3d="true" style="--oty:100; --osx:8; --osy:0.1; --osz:8; --w:200; --otx:0; --otz:0; --orx:0; --ory:0; --orz:0;" objeto="true">
+                    <div top="" style="
+                    background-color: brown;
+                    background: url('../public/img/piso_tile.webp');
+                    background-size: 200px 200px;
+                    "></div>
+                </section>
+
+            </mueve_objetos>
+        </rota_objetos>
+    </corrector_de_perspectiva>
+</body>

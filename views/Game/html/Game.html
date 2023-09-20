@@ -1,0 +1,273 @@
+<!--
+    Desarrollado e implementado por Romel Lucero. Venezuela.
+-->
+<head>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../public/css/Attributes.css"/>
+    <link rel="stylesheet" href="../public/css/3D.css"/>
+
+    <!-- JS -->
+	<script src="../public/js/Client.js"></script>
+	<script src="../public/js/Ids.js"></script>
+    <script src="../public/js/Operators.js"></script>
+    <script src="../public/js/Vector3.js"></script>
+    <script src="../public/js/Quaternion.js"></script>
+    
+    <script src="../public/js/OnCollision.js"></script>
+
+    
+	
+	
+    <script src="../public/js/Interfaz.js"></script>
+    <script src="../public/js/Colors.js"></script>
+    <script src="../public/js/Lenguaje.js"></script>
+	
+    <script src="../public/js/Mouse.js"></script>
+    
+	<script src="../public/js/Keys.js"></script>
+
+    
+    <script src="../public/js/Transform.js"></script>
+    <script src="../public/js/Force.js"></script>
+	
+	<!--
+	<script src="../public/editor/Save.js"></script>
+	-->
+    <script>
+        var backs = new Backgrounds('');
+        is_editor = false;
+    </script>
+
+	<script src="../public/js/Spawner.js"></script>
+
+    <!-- SVG -->
+    <link rel="icon" type="image/svg+xml" href="../public/img/icon_main.png" />
+    <title>Editor: main</title>
+</head>
+<body
+onmousemove="get_mouse(event);"
+onupdate=
+"
+	set_mouse();
+	function CameraFollow()
+	{
+		let p = `${mover.transform().position} + ${new Vector3(0,200,-600)}`.op();
+		player.transform().position = p;
+	}
+	CameraFollow();
+"
+onkeydown="key_on(event);"
+onkeyup="key_off(event);"
+	style="background-color:black"
+>
+    <!-- DECLARATIVAS -->
+
+    <!-- CUBE -->
+    <section imply="false" objeto="true" export="cube" style="
+    --otx:0; --oty:0; --otz:0;
+    --orx:0; --ory:0; --orz:0;
+    --osx:1; --osy:1; --osz:1;
+    ">
+        <div front="" style="background-color: var(--color);"></div>
+        <div back="" style="background-color: var(--color);"></div>
+        <div right="" style="background-color: var(--color);"></div>
+        <div left="" style="background-color: var(--color);"></div>
+        <div top="" style="background-color: var(--color);"></div>
+        <div bottom="" style="background-color: var(--color);"></div>
+    </section>
+
+    <!-- 2D o UI -->
+    <div _orientation="vertical">
+        <div _orientation="vertical_center" ui="true" select="false" style="
+            padding: 2vw;
+            z-index: 10;
+            position: fixed;
+            top: 0;
+            left: 0;
+        ">
+            <div
+			style="color:yellow"	
+			>
+                X: Block
+            </div>
+            <div
+				style="color:yellow"
+				>
+				
+                WASDZ SPACE: Move
+            </div>
+			<!--
+            <div>
+                Mouse: Rotate
+            </div>
+			-->
+			<!--
+            <div>
+                Click: Interact
+            </div>
+			-->
+			<!--
+            <button onclick="
+            let b = confirm('Quieres borrar esta escena');
+            if(b)
+            {
+                updates = [];
+                localStorage[location.pathname] = '';
+                location.reload();
+            }
+            else
+            {
+                
+            }
+            ">
+                Borrar Save
+            </button>
+            <button onclick="
+            navigator.clipboard.writeText(document.body.innerHTML);
+            alert('html copiado');
+            ">
+                Copiar Html
+            </button>
+            <button onclick="
+            if(confirm('Quieres importar?'))
+            {
+                Importar();
+            }
+            else
+            {
+
+            }
+            ">
+                Importar
+            </button>
+			-->
+        </div>
+        <mira _orientation="vertical_center" select="false" style="
+        font-size: 15px;
+        color: red;
+        position: fixed;
+        top: 50vh;
+        left: 50vw;
+        z-index: 100;
+        ">
+            o
+        </mira>
+    </div>
+
+	<!-- DECLARATIVAS -->
+	<section 
+	id="floor_prefab"
+	floor="true"
+	import="cube" imply="false" child_mode="replace" collision3d="true"
+	export="floor_prefab"
+	style=
+	" 
+	--otx:0; --oty:-800; --otz:0; 
+	--orx:0; --ory:0; --orz:0;
+	--osx:250; --osy:0.1; --osz:250; 
+	--w:200;
+	" 
+	objeto="true"
+		onupdate=
+		"
+			let d = __this__.transform().Distance(player.transform().position);
+			if(d > 50000)
+			{
+				//__this__.remove();
+			}
+			else
+			{
+				let child = __this__.querySelector(':scope > *');
+				let opacity = child.CSS().get('opacity').TO_FLOAT();
+				if(opacity < 1)
+				{
+					child.CSS().set('opacity', (opacity + 0.01) + '');
+				}
+				else
+				{
+			
+				}
+			}
+		"
+	>
+		<div top="" style="
+		opacity:0;
+		background-color: black;
+		background-image: url('../public/img/neon.png');
+		background-size: 20px 20px;
+		"></div>
+	</section>
+	
+    <!-- 3D -->
+    <corrector_de_perspectiva>
+        <rota_objetos id="rotar" style="--orx:0; --ory:0; --orz:0; --oqx:0; --oqy:0; --oqz:0;">
+            <mueve_objetos id="mover" style="--otx:0; --oty:0; --otz:0; --w:20; --h:300; --osx:1; --osy:1; --osz:1;" onforce="true" oncollision="" is_collision="true">
+                <!-- IMPLEMENTACIONES -->
+
+				<div
+				id="player"
+				parent3d="true"
+				style="
+			    --otx: 0; --oty: 0; --otz: 0;
+			    --orx:0; --ory:0; --orz:0;
+			    --osx: 1; --osy:1; --osz: 1;
+			    "
+				>
+					<section imply="true" objeto="true" style="
+				    --otx:0; --oty:0; --otz:0;
+				    --orx:0; --ory:0; --orz:0;
+				    --osx:1; --osy: 0.3; --osz: 3;
+				    ">
+				        <div front=""></div>
+				        <div back=""></div>
+				        <div right=""></div>
+				        <div left=""></div>
+				        <div top=""></div>
+				        <div bottom=""></div>
+				    </section>
+					<section imply="true" objeto="true" style="
+				    --otx: 0; --oty:0; --otz: 60;
+				    --orx:0; --ory:0; --orz:0;
+				    --osx: 4; --osy: 0.2; --osz: 1;
+				    ">
+				        <div front=""></div>
+				        <div back=""></div>
+				        <div right=""></div>
+				        <div left=""></div>
+				        <div top=""></div>
+				        <div bottom=""></div>
+				    </section>
+				</div>
+
+				<section 
+				floor="true"
+				import="floor_prefab" 
+				imply="true" 
+				child_mode="add" 
+				style=
+				"
+				--otx:0; --oty:-1800; --otz:0;
+				--orx:0; --ory:0; --orz:0;
+				--osx:250; --osy:0.1; --osz:250;
+				--w:200; 
+				" 
+				></section>
+				<section 
+				floor="true"
+				import="floor_prefab" 
+				imply="true" 
+				child_mode="add" 
+				style=
+				"
+				--otx:0; --oty:1000; --otz:0;
+				--orx:0; --ory:0; --orz:0;
+				--osx:250; --osy:0.1; --osz:250;
+				--w:200; 
+				" 
+				></section>
+
+				<!--game-->
+            </mueve_objetos>
+        </rota_objetos>
+    </corrector_de_perspectiva>
+</body>
