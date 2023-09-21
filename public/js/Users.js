@@ -8,30 +8,27 @@ class Users extends Interfaz
 		this.playing = [];
 	}
 	async GetUsers()
-	{
-		this.localplayer = await async_cmd
-		(
-			'get'
-			,
-			'/id'
-		);
-		
+	{	
 		let res = await async_cmd
 		(
 			'get'
 			,
 			'/users'
 		);
+		console.log(`GetUsers:`);
+		console.log(res);
+		
 		return res.TO_OBJECT();
 	}
 	async InstantiateUsers(users)
 	{	
+		console.log(`InstantiateUsers:`);
 		for(let i = 0; i < users.length; i++)
 		{
 			let u = users[i];
 			let find = this.playing(p => p.id == u.id);
 
-			if(find.id == this.localplayer)
+			if(find.id == player.getAttribute('localplayer'))
 			{
 				continue;
 			}
@@ -48,10 +45,12 @@ class Users extends Interfaz
 	}
 	async Spawn(user)
 	{
+		console.log(`Spawn User:`);
 		let r = 
 		`
   			<div
 			id="${user.id}"
+   			remoteplayer="true"
 			parent3d="true"
 			style="
 			--otx: 0; --oty: 0; --otz: 0;
@@ -105,12 +104,36 @@ class Users extends Interfaz
 	{
 		user.element.transform().position = user.position;
 		user.element.transform().rotation = user.rotation;
+
+		console.log(`TransformSharing`);
+	}
+	RemoveDisconnected()
+	{
+		console.log(`RemoveDisconnected`);
+		let remotes = document.querySelectorAll('[remoteplayer=true]');
+		remotes.forEach
+		(
+			function(n)
+			{
+				let find = this.users.find(u => u.getAttribute('id') == n.getAttribute('id'));
+				if(find)
+				{
+					
+				}
+				else
+				{
+					console.log(`${n.getAttribute('id')} Disconnected`);
+					n.remove();
+				}
+			}
+		)
 	}
 	async Start()
 	{
+		console.log('Users Start');
 		await async_timeout(1000/60);
 		
-		this.users = await GetUsers();
+		this.users = await this.GetUsers();
 		InstantiateUsers(this.users);
 		
 		await Start();

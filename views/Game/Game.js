@@ -16,8 +16,10 @@
 */
 
 
-class Game {
-	constructor() {
+class Game
+{
+	constructor() 
+	{
 
 	}
 }
