@@ -41,6 +41,24 @@ function OnStart ()
         }
     )
 }
+async function async_timeout(ms)
+{
+	return new Promise
+	(
+		function(callback)
+		{
+			setTimeout
+			(
+				function(id)
+				{
+					callback(id)
+				}
+				,
+				ms
+			);
+		}
+	)
+}
 function OnUpdate ()
 {
     let w = document.querySelectorAll('[onupdate]');
@@ -235,4 +253,62 @@ function Importar()
             }
         }
     );
+}
+function Cmd(callback, method, link, body, headers) {
+	var req = new XMLHttpRequest();
+	req.open(method, link, true);
+
+	req.onreadystatechange = function() //cmd
+	{
+		if (req.readyState != 4 || req.status != 200) {
+			callback(undefined);
+			return;
+		}
+		callback(req.responseText);
+	};
+
+	if (headers) {
+		console.log(headers);
+		headers.forEach
+			(
+				function(n) {
+					console.log('n');
+					console.log(n);
+					req.setRequestHeader(n.name, n.value);
+				}
+			);
+		
+	}
+	else {
+		req.setRequestHeader('Content-type', 'application/json');
+		//req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	}
+
+	if (typeof body == undefined) {
+		req.send();
+	} else {
+
+		req.send(body);
+	}
+}
+async function async_cmd(method, link, body, headers)
+{
+	return new Promise
+	(
+		function(callback)
+		{
+			Cmd
+			(
+				callback
+				, 
+				method
+				, 
+				link
+				, 
+				body
+				, 
+				headers
+			)
+		}
+	);
 }
