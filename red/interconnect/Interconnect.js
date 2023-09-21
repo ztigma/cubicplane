@@ -9,9 +9,10 @@ Interconnect.users = [];
 
 class User
 {
-	constructor(ip)
+	constructor(ip, id)
 	{
 		this.ip = ip;
+		this.id = `user_${id}`;
 		this.name = 'none';
 		this.vida = 100;
 		this.position = {x:0, y:0, z:0};

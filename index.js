@@ -15,16 +15,18 @@ const red_interconnect = require('./red/interconnect/Interconnect');
 const Interconnect = red_interconnect.Interconnect;
 const User = red_interconnect.User;
 
+var id = 0;
+
 app.get('/', async (req, res) => 
 {
 	let b = Interconnect.users.find(n => n.ip == req.ip);
 	if(b)
 	{
-		b = new User(req.ip);
+		b = new User(req.ip, id++);
 	}
 	else
 	{
-		Interconnect.users.push(new User(req.ip));
+		Interconnect.users.push(new User(req.ip, id++));
 	}
 
 	console.log(Interconnect.users);
@@ -41,7 +43,7 @@ app.post('/transform_update', async (req, res) =>
 	{
 		b.position = req.body.position;
 		b.rotation = req.body.rotation;
-		console.log(b);
+		console.log(b.id);
 	}
 	else
 	{
@@ -58,6 +60,22 @@ app.get('/vida', async (req, res) =>
 		res.send
 		(
 			b.vida.toString()
+		);
+	}
+	else
+	{
+		res.send('undefined');
+	}
+});
+app.get('/id', async (req, res) => 
+{
+	let b = Interconnect.users.find(n => n.ip == req.ip);
+	console.log(Interconnect.users);
+	if(b)
+	{
+		res.send
+		(
+			b.id.toString()
 		);
 	}
 	else
