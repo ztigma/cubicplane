@@ -299,7 +299,10 @@ async function async_cmd(method, link, body, headers)
 		{
 			Cmd
 			(
-				callback
+				function(data)
+				{
+					callback(data);
+				}
 				, 
 				method
 				, 

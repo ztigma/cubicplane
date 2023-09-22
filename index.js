@@ -52,7 +52,7 @@ setInterval
 );
 app.post('/transform_update', async (req, res) => 
 {
-	console.log('/transform_update');
+	//console.log('/transform_update');
 	
 	let b = Interconnect.users.find(n => n.id == req.body.id);
 	if(b)
@@ -60,11 +60,11 @@ app.post('/transform_update', async (req, res) =>
 		b.position = req.body.position;
 		b.rotation = req.body.rotation;
 		b.last_time = Date.now();
-		console.log(b.id);
+		//console.log(b.id);
 	}
 	else
 	{
-		console.log(`${req.body.id} disconnected user`);
+		//console.log(`${req.body.id} disconnected user`);
 	}
 	res.send('ok');
 })
@@ -86,20 +86,9 @@ app.get('/vida', async (req, res) =>
 });
 app.get('/users', async (req, res) => 
 {
-	let users = Interconnect.users.map
-	(
-		function(n)
-		{
-			let c = 
-			{
-				...{}
-				,
-				...n
-			}
-			delete c.ip;
-			return c;
-		}
-	);
-	res.send(users);
+	console.log('/users');
+	console.log(Interconnect.users);
+	
+	res.send(Interconnect.users);
 });
 app.listen(() => console.log(`server is up!`));

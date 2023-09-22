@@ -16,7 +16,7 @@ class User
 		this.vida = 100;
 		this.position = {x:0, y:0, z:0};
 		this.rotation = {x:0, y:0, z:0};
-		this.last_time = 0;
+		this.last_time = Date.now();
 	}
 }
 module.exports = 

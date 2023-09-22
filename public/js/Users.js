@@ -7,45 +7,38 @@ class Users extends Interfaz
 		this.users = [];
 		this.playing = [];
 	}
-	async GetUsers()
+ 	InstantiateUsers(users)
 	{	
-		let res = await async_cmd
-		(
-			'get'
-			,
-			'/users'
-		);
-		console.log(`GetUsers:`);
-		console.log(res);
-		
-		return res.TO_OBJECT();
-	}
-	async InstantiateUsers(users)
-	{	
-		console.log(`InstantiateUsers:`);
 		for(let i = 0; i < users.length; i++)
 		{
 			let u = users[i];
-			let find = this.playing(p => p.id == u.id);
-
-			if(find.id == player.getAttribute('localplayer'))
+			let find = this.playing.find(p => p.id == u.id);
+			
+			if(u.id == player.getAttribute('localplayer'))
 			{
 				continue;
 			}
 			
 			if(find)
 			{
-				TransformSharing(find);
+				//console.log(`TransformSharing 0: ${find}`);
+				this.TransformSharing(u);
 			}
 			else
 			{
-				await Spawn(u);
+				this.Spawn(u);
 			}
 		}
 	}
-	async Spawn(user)
+	Spawn(user)
 	{
-		console.log(`Spawn User:`);
+		console.log(`Spawn User: ${user.id}`);
+		this.playing.push
+		({
+			...{}
+			,
+			...user
+		});
 		let r = 
 		`
   			<div
@@ -86,26 +79,16 @@ class Users extends Interfaz
 			</div>
   		`	
 		;
-		mover.innerHTML += r;
-		
-		await async_timeout(1000);
-		
-		let u = 
-			{
-				...{element:document.querySelector(`[id=${user.id}]`)}
-				,
-				...user
-			}
-		;
-		
-		this.playing.push(u);
+		mover.innerHTML += r;		
 	}
 	TransformSharing(user)
 	{
-		user.element.transform().position = user.position;
-		user.element.transform().rotation = user.rotation;
+		//console.log(`id: ${user.id}, position: ${user.position}`);
 
-		console.log(`TransformSharing`);
+		let element = document.querySelector(`[id=${user.id}]`);
+		
+		element.transform().position = user.position;
+		element.transform().rotation = user.rotation;
 	}
 	RemoveDisconnected()
 	{
@@ -128,15 +111,36 @@ class Users extends Interfaz
 			}
 		)
 	}
-	async Start()
+	Start()
 	{
-		console.log('Users Start');
-		await async_timeout(1000/60);
-		
-		this.users = await this.GetUsers();
-		InstantiateUsers(this.users);
-		
-		await Start();
+		//console.log('Users Start');
+		let t = this;
+		setInterval
+		(
+			function()
+			{
+				Cmd
+				(
+					function(data)
+					{
+						//console.log(`GetUsers:`);
+						//console.log(data);
+
+						if(typeof data == 'string')
+						{
+							t.users = JSON.parse(data);
+							t.InstantiateUsers(t.users);
+						}
+					}
+					,
+					'GET'
+					,
+					'/users'
+				)
+			}
+			,
+			1000
+		);
 	}
 }
 var users = new Users();
