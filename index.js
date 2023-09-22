@@ -42,7 +42,7 @@ setInterval
 		(
 			function(n)
 			{
-				let b = Date.now() - n.last_time > 60000;
+				let b = Date.now() - n.last_time > 10000;
 				return b;
 			}
 		);
@@ -68,10 +68,9 @@ app.post('/transform_update', async (req, res) =>
 	}
 	res.send('ok');
 })
-app.get('/vida', async (req, res) => 
+app.post('/vida', async (req, res) => 
 {
-	let b = Interconnect.users.find(n => n.ip == req.query.id);
-	console.log(Interconnect.users);
+	let b = Interconnect.users.find(n => n.id == req.body.id);
 	if(b)
 	{
 		res.send
@@ -84,10 +83,30 @@ app.get('/vida', async (req, res) =>
 		res.send('undefined');
 	}
 });
+app.post('/damage', async (req, res) => 
+{
+	let b = Interconnect.users.find(n => n.id == req.body.id);
+	if(b)
+	{
+		console.log('damage!');
+		
+		b.vida -= 10;
+
+		console.log(b.vida);
+		res.send
+		(
+			'ok'
+		);
+	}
+	else
+	{
+		res.send('undefined');
+	}
+});
 app.get('/users', async (req, res) => 
 {
-	console.log('/users');
-	console.log(Interconnect.users);
+	//console.log('/users');
+	//console.log(Interconnect.users);
 	
 	res.send(Interconnect.users);
 });

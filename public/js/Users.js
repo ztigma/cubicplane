@@ -45,11 +45,30 @@ class Users extends Interfaz
 			id="${user.id}"
    			remoteplayer="true"
 			parent3d="true"
+   			onclick=
+	  		"
+	 			Cmd
+	 			(
+	 				function(res)
+	  				{
+	   
+					}
+	 				,
+	  				'POST'
+	   				,
+					'/damage'
+	 				,
+  					{
+	   					id:this.getAttribute('id')
+					}
+				);
+  			"
 			style="
 			--otx: 0; --oty: 0; --otz: 0;
 			--orx:0; --ory:0; --orz:0;
 			--osx: 1; --osy:1; --osz: 1;
    			transition: transform 1s;
+	  		cursor:cell;
 			"
 			>
 				<section imply="true" objeto="true" style="

@@ -43,6 +43,11 @@
     <title>Editor: main</title>
 </head>
 <body
+style=
+"
+	cursor:move;
+	background-color:black;
+"
 onmousemove="get_mouse(event);"
 onupdate=
 "
@@ -101,6 +106,7 @@ onkeyup="key_off(event);"
                 WASDZ SPACE: Move
             </div>
 			<div
+			id="vida"
 			style=
 			"
 				width:200px;
@@ -200,6 +206,29 @@ onkeyup="key_off(event);"
 							,
 							body
 						)
+						Cmd
+						(
+							function(data)
+							{
+								let flotante = parseFloat(data);
+								vida.innerHTML = 'vida: ' + data;
+								let numero = parseFloat(data) * 2;
+								vida.style.setProperty('width', numero + 'px');
+
+								if(flotante < 0)
+								{
+									location.reload();
+								}
+							}
+							,
+							'post'
+							,
+							'/vida'
+							,
+							{
+								id:__this__.getAttribute('localplayer')
+							}
+						);
 						return true;
 					}
 					let run = async function()
